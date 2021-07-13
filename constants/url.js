@@ -1,0 +1,1 @@
+export const DECODE_URL = 'http://nin10news.com/wp-content/themes/twentysixteen/inc/decode.php'
