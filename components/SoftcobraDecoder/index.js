@@ -11,6 +11,7 @@ function SoftcobraDecoder(props) {
 
   const decodeText = React.useCallback(async () => {
     try {
+      console.log(`data=${text}`)
       const resp = await axios({
         method: 'post',
         url: '/api/decode',
@@ -19,7 +20,7 @@ function SoftcobraDecoder(props) {
           'Access-Control-Allow-Methods': 'POST',
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
-        data: `data=${text}`
+        data: `data=${encodeURIComponent(text)}`
       })
       if (resp.data) {
         setDecodedText(window.atob(resp.data))
