@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Col, Input, message, Row, Space, Typography} from 'antd'
+import {Button, Col, Input, message, Row, Space, Spin, Typography} from 'antd'
 import {LinkOutlined} from '@ant-design/icons'
 import axios from 'axios'
 
@@ -11,7 +11,7 @@ function SoftcobraDecoder(props) {
 
   const decodeText = React.useCallback(async () => {
     try {
-      console.log(`data=${text}`)
+      setLoading(true)
       const resp = await axios({
         method: 'post',
         url: '/api/decode',
@@ -27,6 +27,8 @@ function SoftcobraDecoder(props) {
       }
     } catch (e) {
       message.error(`Failed to decode: ${e.message}`)
+    } finally {
+      setLoading(false)
     }
   }, [text])
 
@@ -44,11 +46,18 @@ function SoftcobraDecoder(props) {
           </Row>
           <Row>
             <Col span={24} style={{textAlign: 'center'}}>
-              {decodedText &&
-                <>
-                  <Typography.Text copyable>{decodedText}</Typography.Text>
-                  <Button icon={<LinkOutlined/>} href={decodedText} target={'_blank'} type={'link'}/>
-                </>
+              {
+                loading ?
+                  <Spin /> : (
+                    decodedText ?
+                      (
+                        <>
+                          <Typography.Text copyable>{decodedText}</Typography.Text>
+                          <Button icon={<LinkOutlined/>} href={decodedText} target={'_blank'} type={'link'}/>
+                        </>
+                      )
+                      : null
+                  )
               }
             </Col>
           </Row>
